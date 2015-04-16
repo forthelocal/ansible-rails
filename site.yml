@@ -1,0 +1,13 @@
+---
+- name: Intall prerequisites to run Ruby on Rails on CentOS7
+  hosts: rails server
+  user: centos
+  gather_facts: no
+
+  hosts: all
+  roles:
+    - common
+    - rbenv
+    - mysql
+    - nginx
+    - rails

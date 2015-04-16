@@ -1,0 +1,5 @@
+---
+  nginx:
+    worker_processes: 4
+    worker_connections: 1024
+    elb_ip_cidr: 172.16.0.0/12

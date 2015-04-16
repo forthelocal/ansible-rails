@@ -1,0 +1,19 @@
+---
+- name: Install common pkgs
+  sudo: yes
+  yum: pkg={{item}} state=present
+  with_items:
+    - epel-release
+    - cronie
+
+- name: Enable crond
+  sudo: yes
+  shell: systemctl start crond && systemctl enable crond
+
+- name: Create www dir
+  sudo: yes
+  file: path=/var/www state=directory
+
+- name: Create app root
+  sudo: yes
+  file: path={{ app_root }} state=directory owner={{ os_user }}
