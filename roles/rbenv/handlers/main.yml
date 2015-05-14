@@ -1,0 +1,8 @@
+---
+  - name: change owner of install dir
+    sudo: yes
+    command: chgrp -R rbenv {{ rbenv.root_path }}
+
+  - name: change mode of install dir
+    sudo: yes
+    command: chmod -R 775 {{ rbenv.root_path }}
