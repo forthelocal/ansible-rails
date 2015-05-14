@@ -6,3 +6,4 @@
     - patch
     - gcc-c++
     - v8
+    - ImageMagick
