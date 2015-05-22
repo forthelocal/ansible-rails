@@ -17,3 +17,8 @@
 - name: Create app root
   sudo: yes
   file: path={{ app_root }} state=directory owner={{ os_user }}
+
+- name: Disable SELinux
+  sudo: yes
+  command: setenforce 0
+  ignore_errors: True

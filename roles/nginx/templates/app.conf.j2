@@ -12,7 +12,7 @@ server {
   root {{ app_root }}/current/public;
   client_max_body_size 5M;
 
-  location ~ ^/(favicon.ico|robots.txt|audios/|system/) {
+  location ~ ^/(favicon.ico|robots.txt|audios/|uploads/) {
     gzip_static on;
 
     root {{ app_root }}/current/public;
