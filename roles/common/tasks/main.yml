@@ -18,6 +18,10 @@
   sudo: yes
   file: path={{ app_root }} state=directory owner={{ os_user }}
 
+- name: Edit SELinux Config file
+  sudo: yes
+  command: sed -i -e "s/^SELINUX=enforcing/SELINUX=permissive/g" /etc/selinux/config
+
 - name: Disable SELinux
   sudo: yes
   command: setenforce 0
