@@ -11,3 +11,4 @@
     - mysql
     - nginx
     - rails
+    - td-agent
