@@ -1,4 +1,19 @@
 ---
+  # http://docs.fluentd.org/articles/before-install
+- name: Increase ulimit (need to reboot to work) !! reboot required !!
+  sudo: yes
+  template: src=limits-td.conf dest=/etc/security/limits.d/90-td.conf
+
+  # http://docs.fluentd.org/articles/before-install
+- name: Optimize Network Kernel Parameters
+  sudo: yes
+  template: src=sysctl-td.conf dest=/etc/sysctl.d/90-td.conf
+
+- name: Reflect sysctl configs
+  sudo: yes
+  command: sysctl -p /etc/sysctl.d/90-td.conf
+  ignore_errors: True # docker does not have these parameters.
+
 - name: download td-agent install script
   get_url: url=https://td-toolbelt.herokuapp.com/sh/install-redhat-td-agent2.sh dest=/tmp/install-td-agent.sh
 
