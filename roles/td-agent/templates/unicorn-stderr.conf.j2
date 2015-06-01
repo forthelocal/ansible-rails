@@ -1,0 +1,21 @@
+<source>
+  type tail
+  path /var/www/{{ app_name }}/shared/log/unicorn.stderr.log
+  pos_file /var/log/td-agent/unicorn.stderr.log.pos
+
+  format /^(?<all>.*)$/
+
+  tag {{ app_name }}.unicorn.stderr
+</source>
+
+<match {{ app_name }}.unicorn.stderr>
+  type s3
+
+  s3_bucket {{ tdagent.bucket }}
+  path "logs/#{Socket.gethostname}/unicorn.stderr/"
+
+  time_slice_format %Y%m%d/%Y%m%d-%H
+
+  flush_interval 15s
+  buffer_path /var/log/td-agent/unicorn.stderr
+</match>

@@ -1,0 +1,21 @@
+<source>
+  type tail
+  path /var/www/{{ app_name }}/shared/log/aws.log
+  pos_file /var/log/td-agent/aws.log.pos
+
+  format /^(?<all>.*)$/
+
+  tag {{ app_name }}.rails
+</source>
+
+<match {{ app_name }}.rails>
+  type s3
+
+  s3_bucket {{ tdagent.bucket }}
+  path "logs/#{Socket.gethostname}/rails/"
+
+  time_slice_format %Y%m%d/%Y%m%d-%H
+
+  flush_interval 15s
+  buffer_path /var/log/td-agent/rails
+</match>
