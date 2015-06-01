@@ -15,15 +15,26 @@
   ignore_errors: True # docker does not have these parameters.
 
 - name: download td-agent install script
-  get_url: url=https://td-toolbelt.herokuapp.com/sh/install-redhat-td-agent2.sh dest=/tmp/install-td-agent.sh
+  get_url: url=https://td-toolbelt.herokuapp.com/sh/install-redhat-td-agent2.sh dest={{ tdagent.script }}
 
 - name: execute install script
+  command: sh {{ tdagent.script }}
+
+- name: create conf dir
   sudo: yes
-  command: sh /tmp/install-td-agent.sh
+  file: path={{ tdagent.root_path }}/{{ tdagent.config_dir }} state=directory
 
 - name: Place config files
   sudo: yes
-  template: src=td-agent.conf.j2 dest=/etc/td-agent/td-agent.conf
+  template: src={{item.src}} dest={{item.dest}}
+  with_items:
+    - { src: td-agent.conf.j2, dest: "{{ tdagent.root_path }}/td-agent.conf" }
+    - { src: td-agent.sysconfig.j2, dest: "/etc/sysconfig/td-agent" }
+    - { src: rails.conf.j2, dest: "{{ tdagent.root_path }}/{{ tdagent.config_dir }}/rails.conf" }
+    - { src: unicorn-stdout.conf.j2, dest: "{{ tdagent.root_path }}/{{ tdagent.config_dir }}/unicorn-stdout.conf" }
+    - { src: unicorn-stderr.conf.j2, dest: "{{ tdagent.root_path }}/{{ tdagent.config_dir }}/unicorn-stderr.conf" }
+    - { src: nginx-access.conf.j2, dest: "{{ tdagent.root_path }}/{{ tdagent.config_dir }}/nginx-access.conf" }
+    - { src: nginx-error.conf.j2, dest: "{{ tdagent.root_path }}/{{ tdagent.config_dir }}/nginx-error.conf" }
 
 - name: start td-agent
   sudo: yes

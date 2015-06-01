@@ -1,0 +1,6 @@
+---
+  tdagent:
+    script: /tmp/install-td-agent.sh
+    root_path: /etc/td-agent
+    config_dir: config.d
+    bucket: rails42awstest
