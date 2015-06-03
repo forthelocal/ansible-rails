@@ -18,11 +18,17 @@
   sudo: yes
   file: path={{ app_root }} state=directory owner={{ os_user }}
 
+- name: Check to see if selinux exists
+  stat: path=/etc/selinux/config
+  register: selinux_conf
+
 - name: Edit SELinux Config file
   sudo: yes
   command: sed -i -e "s/^SELINUX=enforcing/SELINUX=permissive/g" /etc/selinux/config
+  when: selinux_conf.stat.exists == True
 
 - name: Disable SELinux
   sudo: yes
   command: setenforce 0
-  ignore_errors: True
+  when: selinux_conf.stat.exists == True
+
