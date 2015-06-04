@@ -24,11 +24,10 @@
 
 - name: Edit SELinux Config file
   sudo: yes
-  command: sed -i -e "s/^SELINUX=enforcing/SELINUX=permissive/g" /etc/selinux/config
+  lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=permissive
   when: selinux_conf.stat.exists == True
 
 - name: Disable SELinux
   sudo: yes
   command: setenforce 0
   when: selinux_conf.stat.exists == True
-
